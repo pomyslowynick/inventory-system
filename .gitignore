@@ -48,6 +48,9 @@ hs_err_pid*
 # IntelliJ
 out/
 
+#Libraries in idea
+.idea/libraries
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
