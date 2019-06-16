@@ -45,6 +45,9 @@ hs_err_pid*
 # File-based project format
 *.iws
 
+#All of .idea
+.idea/
+
 # IntelliJ
 out/
 
