@@ -11,6 +11,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
     TextField name = new TextField("Name");
     NumberField price = new NumberField("Price");
     TextField category = new TextField("Category");
-    NumberField quantity= new NumberField("Quantity");
+    TextField quantity= new TextField("Quantity");
 
     /* Action buttons */
     // TODO why more code?
@@ -45,11 +46,21 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
 
         add(name, price, category, quantity,  actions);
 
+        // bind quantity
+        binder.forField(quantity)
+                .withConverter(new StringToIntegerConverter("Must be integer"))
+                .bind(Item::getQuantity, Item::setQuantity);
+        binder.readBean(item);
+
         // bind using naming convention
         binder.bindInstanceFields(this);
 
         // Configure and style components
         setSpacing(true);
+
+        // Set maximum and minimum amount for quantity
+//        quantity.setMin(0);
+//        quantity.setMax(5);
 
         save.getElement().getThemeList().add("primary");
         delete.getElement().getThemeList().add("error");

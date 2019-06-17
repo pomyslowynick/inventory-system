@@ -11,6 +11,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import org.springframework.util.StringUtils;
@@ -42,22 +44,27 @@ public class MainView extends VerticalLayout {
         this.grid = new Grid<>(Item.class);
         this.filter = new TextField();
         this.addNewBtn = new Button("New item", VaadinIcon.PLUS.create());
-        this.select = new Select<>("By price", "By categories", "5 last added");
+        this.select = new Select<>("Show all", "By price", "By categories", "5 last added");
 
 
-        // build layout
+        // Build layout
         HorizontalLayout actions = new HorizontalLayout(select, filter, priceFilterMoreThan, priceFilterLessThanOrEqual, addNewBtn);
         add(actions, grid, editor);
 
         grid.setHeight("300px");
-        grid.setColumns("id", "name", "price", "category");
+        grid.setColumns("id", "name", "price", "category", "quantity");
         grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
 
-        // dropdown for filtering options
+        // Dropdown for filtering options
         select.setPlaceholder("Filter by...");
-        select.setValue("");
+        select.setValue("Show all");
+        filter.setPlaceholder("Filter text...");
 
-        filter.setPlaceholder("Filter by price");
+        // Set price and String filters to  be not visible at start
+        priceFilterMoreThan.setVisible(false);
+        priceFilterLessThanOrEqual.setVisible(false);
+        filter.setVisible(false);
+
 
         // Hook logic to components
 
@@ -90,7 +97,7 @@ public class MainView extends VerticalLayout {
 
 //         tag::listItems[]
     void listItems(String filterText) {
-        if (select.getValue().equals("")) {
+        if (select.getValue().equals("Show all")) {
             grid.setItems(repo.findAll());
         } else if (StringUtils.isEmpty(filterText)) {
             grid.setItems(repo.findAll());
@@ -108,10 +115,10 @@ public class MainView extends VerticalLayout {
 
 //         end::listItems[]
     void changeFilterVisibility() {
-        if (select.getValue().equals("5 last added")) {
-            filter.setVisible(false);
-        } else {
+        if (select.getValue().equals("By category")) {
             filter.setVisible(true);
+        } else {
+            filter.setVisible(false);
         }
     }
 
