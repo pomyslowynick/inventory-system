@@ -13,6 +13,8 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+
 @Route
 public class MainView extends VerticalLayout {
 
@@ -31,50 +33,51 @@ public class MainView extends VerticalLayout {
         this.editor = editor;
         this.grid = new Grid<>(Item.class);
         this.filter = new TextField();
-        this.addNewBtn = new Button("New customer", VaadinIcon.PLUS.create());
+        this.addNewBtn = new Button("New item", VaadinIcon.PLUS.create());
 
         // build layout
         HorizontalLayout actions = new HorizontalLayout(filter, addNewBtn);
         add(actions, grid, editor);
 
         grid.setHeight("300px");
-        grid.setColumns("id", "firstName", "lastName");
+        grid.setColumns("id", "name", "price", "category");
         grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
 
-        filter.setPlaceholder("Filter by last name");
+        filter.setPlaceholder("Filter by price");
 
         // Hook logic to components
 
         // Replace listing with filtered content when user changes filter
         filter.setValueChangeMode(ValueChangeMode.EAGER);
-        filter.addValueChangeListener(e -> listCustomers(e.getValue()));
+//        filter.addValueChangeListener(e -> listItems(e.getValue()));
 
         // Connect selected Customer to editor or hide if none is selected
-        grid.asSingleSelect().addValueChangeListener(e -> {
-            editor.editItem(e.getValue());
-        });
+//        grid.asSingleSelect().addValueChangeListener(e -> {
+//            editor.editItem(e.getValue());
+//        });
 
         // Instantiate and edit new Customer the new button is clicked
-        addNewBtn.addClickListener(e -> editor.editItem(new Item("", "")));
+//        addNewBtn.addClickListener(e -> editor.editItem(new Item("", (BigDecimal) "")));
 
         // Listen changes made by the editor, refresh data from backend
-        editor.setChangeHandler(() -> {
-            editor.setVisible(false);
-            listCustomers(filter.getValue());
-        });
+//        editor.setChangeHandler(() -> {
+//            editor.setVisible(false);
+//            listItems(filter.getValue());
+//        });
 
         // Initialize listing
-        listCustomers(null);
-    }
+//        listItems(null);
+//    }
 
-    // tag::listCustomers[]
-    void listCustomers(int price) {
-        if (StringUtils.isEmpty(filterText)) {
-            grid.setItems(repo.findAll());
-        }
-        else {
-            grid.setItems(repo.findByPriceLessThan(price));
-        }
+        // tag::listCustomers[]
+//    void listItems(int price) {
+//        if (StringUtils.isEmpty(price)) {
+//            grid.setItems(repo.findAll());
+//        }
+//        else {
+//            grid.setItems(repo.findByPriceLessThan(price));
+//        }
+//    }
+//         end::listCustomers[]
     }
-    // end::listCustomers[]
 }

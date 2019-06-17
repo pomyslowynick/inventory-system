@@ -20,4 +20,11 @@ public class Item {
     private BigDecimal price;
     private String category;
 
+    public Item(String name, BigDecimal price, String category) {
+        this.name = name;
+        this.price = price;
+        this.category = category;
+
+    }
+
 }

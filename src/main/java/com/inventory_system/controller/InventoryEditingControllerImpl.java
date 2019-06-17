@@ -14,37 +14,25 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class InventoryEditingControllerImpl extends VerticalLayout implements InventoryEditingController, KeyNotifier{
+
+@SpringComponent
+@UIScope
+public class InventoryEditingControllerImpl extends VerticalLayout implements KeyNotifier{
 
     private final ItemRepository itemRepository;
     private Item item;
 
-
-    @Override
-    public Item addItem(Item item) {
-        return null;
-    }
-
-    @Override
-    public Item updateItem(Item item) {
-        return null;
-    }
-
-    @Override
-    public void deleteItemByID(Long id) {
-
-    }
-
     /* Fields to edit properties in Item entity */
-    TextField firstName = new TextField("First name");
-    TextField lastName = new TextField("Last name");
+    TextField name = new TextField("First name");
+    TextField price = new TextField("Last name");
+    TextField category = new TextField("Last name");
 
     /* Action buttons */
     // TODO why more code?
     Button save = new Button("Save", VaadinIcon.CHECK.create());
     Button cancel = new Button("Cancel");
     Button delete = new Button("Delete", VaadinIcon.TRASH.create());
-    private HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
+    HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
 
     Binder<Item> binder = new Binder<>(Item.class);
     private ChangeHandler changeHandler;
@@ -53,24 +41,24 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements In
     public InventoryEditingControllerImpl(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
 
-        add(firstName, lastName, actions);
+        add(name, price, category, actions);
 
         // bind using naming convention
         binder.bindInstanceFields(this);
-
-        // Configure and style components
-        setSpacing(true);
-
-        save.getElement().getThemeList().add("primary");
-        delete.getElement().getThemeList().add("error");
-
-        addKeyPressListener(Key.ENTER, e -> save());
-
-        // wire action buttons to save, delete and reset
-        save.addClickListener(e -> save());
-        delete.addClickListener(e -> delete());
-        cancel.addClickListener(e -> editItem(item));
-        setVisible(false);
+//
+//        // Configure and style components
+//        setSpacing(true);
+//
+//        save.getElement().getThemeList().add("primary");
+//        delete.getElement().getThemeList().add("error");
+//
+//        addKeyPressListener(Key.ENTER, e -> save());
+//
+//        // wire action buttons to save, delete and reset
+//        save.addClickListener(e -> save());
+//        delete.addClickListener(e -> delete());
+//        cancel.addClickListener(e -> editItem(item));
+//        setVisible(false);
     }
 
     void delete() {
@@ -87,35 +75,35 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements In
         void onChange();
     }
 
-    public final void editItem(Item c) {
-        if (c == null) {
-            setVisible(false);
-            return;
-        }
-        final boolean persisted = c.getId() != null;
-        if (persisted) {
-            // Find fresh entity for editing
-            item = itemRepository.findById(c.getId()).get();
-        }
-        else {
-            item = c;
-        }
-        cancel.setVisible(persisted);
-
-        // Bind Item properties to similarly named fields
-        // Could also use annotation or "manual binding" or programmatically
-        // moving values from fields to entities before saving
-        binder.setBean(item);
-
-        setVisible(true);
-
-        // Focus first name initially
-        firstName.focus();
-    }
-
-    public void setChangeHandler(ChangeHandler h) {
-        // ChangeHandler is notified when either save or delete
-        // is clicked
-        changeHandler = h;
-    }
+//    public final void editItem(Item c) {
+//        if (c == null) {
+//            setVisible(false);
+//            return;
+//        }
+//        final boolean persisted = c.getId() != null;
+//        if (persisted) {
+//            // Find fresh entity for editing
+//            item = itemRepository.findById(c.getId()).get();
+//        }
+//        else {
+//            item = c;
+//        }
+//        cancel.setVisible(persisted);
+//
+//        // Bind Item properties to similarly named fields
+//        // Could also use annotation or "manual binding" or programmatically
+//        // moving values from fields to entities before saving
+//        binder.setBean(item);
+//
+//        setVisible(true);
+//
+//        // Focus first name initially
+//        firstName.focus();
+//    }
+//
+//    public void setChangeHandler(ChangeHandler h) {
+//        // ChangeHandler is notified when either save or delete
+//        // is clicked
+//        changeHandler = h;
+//    }
 }
