@@ -9,6 +9,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
@@ -27,11 +28,17 @@ public class MainView extends VerticalLayout {
 
     final TextField filter;
 
+    final NumberField priceFilterMoreThan;
+
+    final NumberField priceFilterLessThanOrEqual;
+
     private final Button addNewBtn;
 
     public MainView(ItemRepository repo, InventoryEditingControllerImpl editor) {
         this.repo = repo;
         this.editor = editor;
+        this.priceFilterMoreThan = new NumberField();
+        this.priceFilterLessThanOrEqual = new NumberField();
         this.grid = new Grid<>(Item.class);
         this.filter = new TextField();
         this.addNewBtn = new Button("New item", VaadinIcon.PLUS.create());
@@ -48,6 +55,7 @@ public class MainView extends VerticalLayout {
 
         // dropdown for filtering options
         select.setPlaceholder("Filter by...");
+        select.setValue("");
 
         filter.setPlaceholder("Filter by price");
 
@@ -57,13 +65,17 @@ public class MainView extends VerticalLayout {
         filter.setValueChangeMode(ValueChangeMode.EAGER);
         filter.addValueChangeListener(e -> listItems(e.getValue()));
 
+        // Change products ordering when new filter option is selected
+        select.addValueChangeListener(e -> listItems(e.getValue()));
+        select.addValueChangeListener(e -> changeFilterVisibility());
+
         // Connect selected Item to editor or hide if none is selected
         grid.asSingleSelect().addValueChangeListener(e -> {
             editor.editItem(e.getValue());
         });
 
         // Instantiate and edit new Item the new button is clicked
-        addNewBtn.addClickListener(e -> editor.editItem(new Item("", 0.0, "")));
+        addNewBtn.addClickListener(e -> editor.editItem(new Item("", 0.0, "", 0)));
 
         // Listen changes made by the editor, refresh data from backend
         editor.setChangeHandler(() -> {
@@ -77,16 +89,29 @@ public class MainView extends VerticalLayout {
 
 //         tag::listItems[]
     void listItems(String filterText) {
-        if (StringUtils.isEmpty(filterText)) {
+        if (select.getValue().equals("")) {
             grid.setItems(repo.findAll());
-        } else if(select.getValue().equals("By price")) {
-            grid.setItems(repo.findFirst2ByCategoryContainsIgnoreCase(filterText));
-        }
-        else {
-//            grid.setItems(repo.findAll());
+        } else if (StringUtils.isEmpty(filterText)) {
+            grid.setItems(repo.findAll());
+        } else if (select.getValue().equals("5 last added")) {
+            grid.setItems(repo.findTop5ByOrderByIdDesc());
+        } else if (select.getValue().equals("By price")) {
+            grid.setItems(repo.findAll());
+        } else if (select.getValue().equals("By categories")) {
             grid.setItems(repo.findByCategoryContainsIgnoreCase(filterText));
         }
+        else {
+            grid.setItems(repo.findAll());
+        }
     }
+
 //         end::listItems[]
+    void changeFilterVisibility() {
+        if (select.getValue().equals("5 last added")) {
+            filter.setVisible(false);
+        } else {
+            filter.setVisible(true);
+        }
+    }
     }
 

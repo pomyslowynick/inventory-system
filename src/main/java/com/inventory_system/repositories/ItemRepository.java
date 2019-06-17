@@ -9,7 +9,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByPriceLessThan(int price);
 
-    List<Item> findFirstById(String id);
+    List<Item> findTop5ByOrderByIdDesc();
 
     List<Item> findByCategoryContainsIgnoreCase(String category);
 
