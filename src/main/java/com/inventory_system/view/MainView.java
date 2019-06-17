@@ -8,12 +8,11 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import org.springframework.util.StringUtils;
-
-import java.math.BigDecimal;
 
 @Route
 public class MainView extends VerticalLayout {
@@ -21,6 +20,8 @@ public class MainView extends VerticalLayout {
     private final ItemRepository repo;
 
     private final InventoryEditingControllerImpl editor;
+
+    final Select<String> select;
 
     final Grid<Item> grid;
 
@@ -34,14 +35,19 @@ public class MainView extends VerticalLayout {
         this.grid = new Grid<>(Item.class);
         this.filter = new TextField();
         this.addNewBtn = new Button("New item", VaadinIcon.PLUS.create());
+        this.select = new Select<>("By price", "By categories", "5 last added");
+
 
         // build layout
-        HorizontalLayout actions = new HorizontalLayout(filter, addNewBtn);
+        HorizontalLayout actions = new HorizontalLayout(select, filter,  addNewBtn);
         add(actions, grid, editor);
 
         grid.setHeight("300px");
         grid.setColumns("id", "name", "price", "category");
         grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
+
+        // dropdown for filtering options
+        select.setPlaceholder("Filter by...");
 
         filter.setPlaceholder("Filter by price");
 
@@ -51,12 +57,12 @@ public class MainView extends VerticalLayout {
         filter.setValueChangeMode(ValueChangeMode.EAGER);
         filter.addValueChangeListener(e -> listItems(e.getValue()));
 
-        // Connect selected Customer to editor or hide if none is selected
+        // Connect selected Item to editor or hide if none is selected
         grid.asSingleSelect().addValueChangeListener(e -> {
             editor.editItem(e.getValue());
         });
 
-        // Instantiate and edit new Customer the new button is clicked
+        // Instantiate and edit new Item the new button is clicked
         addNewBtn.addClickListener(e -> editor.editItem(new Item("", 0.0, "")));
 
         // Listen changes made by the editor, refresh data from backend
@@ -69,16 +75,18 @@ public class MainView extends VerticalLayout {
         listItems(null);
     }
 
-//         tag::listCustomers[]
+//         tag::listItems[]
     void listItems(String filterText) {
         if (StringUtils.isEmpty(filterText)) {
             grid.setItems(repo.findAll());
+        } else if(select.getValue().equals("By price")) {
+            grid.setItems(repo.findFirst2ByCategoryContainsIgnoreCase(filterText));
         }
         else {
 //            grid.setItems(repo.findAll());
-            grid.setItems(repo.findByCategoryContains(filterText));
+            grid.setItems(repo.findByCategoryContainsIgnoreCase(filterText));
         }
     }
-//         end::listCustomers[]
+//         end::listItems[]
     }
 
