@@ -27,6 +27,7 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
     TextField name = new TextField("Name");
     NumberField price = new NumberField("Price");
     TextField category = new TextField("Category");
+    NumberField quantity= new NumberField("Quantity");
 
     /* Action buttons */
     // TODO why more code?
@@ -42,7 +43,7 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
     public InventoryEditingControllerImpl(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
 
-        add(name, price, category, actions);
+        add(name, price, category, quantity,  actions);
 
         // bind using naming convention
         binder.bindInstanceFields(this);

@@ -46,7 +46,7 @@ public class MainView extends VerticalLayout {
 
 
         // build layout
-        HorizontalLayout actions = new HorizontalLayout(select, filter,  addNewBtn);
+        HorizontalLayout actions = new HorizontalLayout(select, filter, priceFilterMoreThan, priceFilterLessThanOrEqual, addNewBtn);
         add(actions, grid, editor);
 
         grid.setHeight("300px");
@@ -68,6 +68,7 @@ public class MainView extends VerticalLayout {
         // Change products ordering when new filter option is selected
         select.addValueChangeListener(e -> listItems(e.getValue()));
         select.addValueChangeListener(e -> changeFilterVisibility());
+        select.addValueChangeListener(e -> changePriceFilterVisibility());
 
         // Connect selected Item to editor or hide if none is selected
         grid.asSingleSelect().addValueChangeListener(e -> {
@@ -111,6 +112,16 @@ public class MainView extends VerticalLayout {
             filter.setVisible(false);
         } else {
             filter.setVisible(true);
+        }
+    }
+
+    void changePriceFilterVisibility() {
+        if (select.getValue().equals("By price")) {
+            priceFilterMoreThan.setVisible(true);
+            priceFilterLessThanOrEqual.setVisible(true);
+        } else {
+            priceFilterMoreThan.setVisible(false);
+            priceFilterLessThanOrEqual.setVisible(false);
         }
     }
     }
