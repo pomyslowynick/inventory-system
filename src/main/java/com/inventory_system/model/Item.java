@@ -20,6 +20,12 @@ public class Item {
     private Double price;
     private String category;
 
+    public Item() {
+        this.name = null;
+        this.price = null;
+        this.category = null;
+
+    }
     public Item(String name, Double price, String category) {
         this.name = name;
         this.price = price;

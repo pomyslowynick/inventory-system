@@ -75,6 +75,7 @@ public class MainView extends VerticalLayout {
             grid.setItems(repo.findAll());
         }
         else {
+//            grid.setItems(repo.findAll());
             grid.setItems(repo.findByCategoryContains(filterText));
         }
     }
