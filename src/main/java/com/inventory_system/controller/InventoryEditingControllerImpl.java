@@ -34,8 +34,9 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
     // TODO why more code?
     Button save = new Button("Save", VaadinIcon.CHECK.create());
     Button cancel = new Button("Cancel");
+    Button reset = new Button("Reset");
     Button delete = new Button("Delete", VaadinIcon.TRASH.create());
-    HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
+    HorizontalLayout actions = new HorizontalLayout(save, cancel, delete, reset);
 
     Binder<Item> binder = new Binder<>(Item.class);
     private ChangeHandler changeHandler;
@@ -49,7 +50,7 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         // bind quantity
         binder.forField(quantity)
                 .withConverter(new StringToIntegerConverter("Must be integer"))
-                .withValidator(quantity -> quantity >= 0 && quantity < 5,
+                .withValidator(quantity -> quantity >= 0 && quantity <= 5,
                         "Quantity must be a number between 0 and 5 inclusive.")
                 .bind(Item::getQuantity, Item::setQuantity);
         binder.readBean(item);
@@ -83,6 +84,7 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
 
     void save() {
         itemRepository.save(item);
+        System.out.println(Item.numberOfItems);
         changeHandler.onChange();
     }
 

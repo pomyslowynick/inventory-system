@@ -65,6 +65,10 @@ public class MainView extends VerticalLayout {
         priceFilterLessThanOrEqual.setVisible(false);
         filter.setVisible(false);
 
+        // Set default values for price filters
+        priceFilterMoreThan.setValue(0.0);
+        priceFilterLessThanOrEqual.setValue(1000.0);
+
 
         // Hook logic to components
 
@@ -107,6 +111,9 @@ public class MainView extends VerticalLayout {
             grid.setItems(repo.findTop5ByOrderByIdDesc());
         } else if (select.getValue().equals("By price")) {
             grid.setItems(repo.findAll());
+            double temp1 = priceFilterLessThanOrEqual.getValue();
+            double temp2 = priceFilterMoreThan.getValue();
+            grid.setItems(repo.findByPriceLessThanAndPriceGreaterThan(temp2, temp1));
         } else if (select.getValue().equals("By categories")) {
             grid.setItems(repo.findByCategoryContainsIgnoreCase(filterText));
         }

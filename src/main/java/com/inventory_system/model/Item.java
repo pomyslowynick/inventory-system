@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Data
 @Entity
 public class Item {
-    private static int numberOfItems;
+    public static int numberOfItems;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
