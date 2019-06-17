@@ -8,6 +8,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -23,9 +24,9 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
     private Item item;
 
     /* Fields to edit properties in Item entity */
-    TextField name = new TextField("First name");
-    TextField price = new TextField("Last name");
-    TextField category = new TextField("Last name");
+    TextField name = new TextField("Name");
+    NumberField price = new NumberField("Price");
+    TextField category = new TextField("Category");
 
     /* Action buttons */
     // TODO why more code?
@@ -45,20 +46,20 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
 
         // bind using naming convention
         binder.bindInstanceFields(this);
-//
-//        // Configure and style components
-//        setSpacing(true);
-//
-//        save.getElement().getThemeList().add("primary");
-//        delete.getElement().getThemeList().add("error");
-//
-//        addKeyPressListener(Key.ENTER, e -> save());
-//
-//        // wire action buttons to save, delete and reset
-//        save.addClickListener(e -> save());
-//        delete.addClickListener(e -> delete());
-//        cancel.addClickListener(e -> editItem(item));
-//        setVisible(false);
+
+        // Configure and style components
+        setSpacing(true);
+
+        save.getElement().getThemeList().add("primary");
+        delete.getElement().getThemeList().add("error");
+
+        addKeyPressListener(Key.ENTER, e -> save());
+
+        // wire action buttons to save, delete and reset
+        save.addClickListener(e -> save());
+        delete.addClickListener(e -> delete());
+        cancel.addClickListener(e -> editItem(item));
+        setVisible(false);
     }
 
     void delete() {
@@ -75,35 +76,35 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         void onChange();
     }
 
-//    public final void editItem(Item c) {
-//        if (c == null) {
-//            setVisible(false);
-//            return;
-//        }
-//        final boolean persisted = c.getId() != null;
-//        if (persisted) {
-//            // Find fresh entity for editing
-//            item = itemRepository.findById(c.getId()).get();
-//        }
-//        else {
-//            item = c;
-//        }
-//        cancel.setVisible(persisted);
-//
-//        // Bind Item properties to similarly named fields
-//        // Could also use annotation or "manual binding" or programmatically
-//        // moving values from fields to entities before saving
-//        binder.setBean(item);
-//
-//        setVisible(true);
-//
-//        // Focus first name initially
-//        firstName.focus();
-//    }
-//
-//    public void setChangeHandler(ChangeHandler h) {
-//        // ChangeHandler is notified when either save or delete
-//        // is clicked
-//        changeHandler = h;
-//    }
+    public final void editItem(Item c) {
+        if (c == null) {
+            setVisible(false);
+            return;
+        }
+        final boolean persisted = c.getId() != null;
+        if (persisted) {
+            // Find fresh entity for editing
+            item = itemRepository.findById(c.getId()).get();
+        }
+        else {
+            item = c;
+        }
+        cancel.setVisible(persisted);
+
+        // Bind Item properties to similarly named fields
+        // Could also use annotation or "manual binding" or programmatically
+        // moving values from fields to entities before saving
+        binder.setBean(item);
+
+        setVisible(true);
+
+        // Focus first name initially
+        name.focus();
+    }
+
+    public void setChangeHandler(ChangeHandler h) {
+        // ChangeHandler is notified when either save or delete
+        // is clicked
+        changeHandler = h;
+    }
 }

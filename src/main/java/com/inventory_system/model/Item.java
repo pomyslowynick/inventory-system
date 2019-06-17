@@ -17,10 +17,10 @@ public class Item {
 
     private Long id;
     private String name;
-    private BigDecimal price;
+    private Double price;
     private String category;
 
-    public Item(String name, BigDecimal price, String category) {
+    public Item(String name, Double price, String category) {
         this.name = name;
         this.price = price;
         this.category = category;
