@@ -101,6 +101,8 @@ public class MainView extends VerticalLayout {
             grid.setItems(repo.findAll());
         } else if (StringUtils.isEmpty(filterText)) {
             grid.setItems(repo.findAll());
+        } else if (select.getValue().equals("Filter text...")) {
+            grid.setItems(repo.findAll());
         } else if (select.getValue().equals("5 last added")) {
             grid.setItems(repo.findTop5ByOrderByIdDesc());
         } else if (select.getValue().equals("By price")) {
@@ -115,7 +117,7 @@ public class MainView extends VerticalLayout {
 
 //         end::listItems[]
     void changeFilterVisibility() {
-        if (select.getValue().equals("By category")) {
+        if (select.getValue().equals("By categories")) {
             filter.setVisible(true);
         } else {
             filter.setVisible(false);
