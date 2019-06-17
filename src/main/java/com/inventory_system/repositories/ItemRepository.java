@@ -9,4 +9,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByPriceLessThan(int price);
 
+    List<Item> findByCategoryContains(String category);
 }
