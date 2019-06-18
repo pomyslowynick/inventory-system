@@ -15,11 +15,18 @@ import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 
 @SpringComponent
 @UIScope
-public class InventoryEditingControllerImpl extends VerticalLayout implements KeyNotifier{
+@RestController
+public class InventoryEditingControllerImpl extends VerticalLayout implements KeyNotifier {
 
     private final ItemRepository itemRepository;
     private Item item;
@@ -47,6 +54,13 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
 
         add(name, price, category, quantity,  actions);
 
+        // bind name
+        binder.forField(name)
+                .withValidator(name -> name.length() > 2,
+                        "Name length must be at least two characters long.")
+                .bind(Item::getName, Item::setName);
+        binder.readBean(item);
+
         // bind quantity
         binder.forField(quantity)
                 .withConverter(new StringToIntegerConverter("Must be integer"))
@@ -64,6 +78,14 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         // Set maximum and minimum amount for quantity
 //        quantity.setMin(0);
 //        quantity.setMax(5);
+
+        // Validate item
+//        @PostMapping("/items")
+//        ResponseEntity<String> addUser(@Valid @RequestBody Item item) {
+//            // persisting the user
+//            return ResponseEntity.ok("Item is valid");
+//        }
+
 
         save.getElement().getThemeList().add("primary");
         delete.getElement().getThemeList().add("error");
@@ -84,7 +106,6 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
 
     void save() {
         itemRepository.save(item);
-        System.out.println(Item.numberOfItems);
         changeHandler.onChange();
     }
 

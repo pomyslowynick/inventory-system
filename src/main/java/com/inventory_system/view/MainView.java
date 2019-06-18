@@ -5,6 +5,7 @@ import com.inventory_system.model.Item;
 import com.inventory_system.repositories.ItemRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -25,6 +26,8 @@ public class MainView extends VerticalLayout {
 
 //    final Select<String> selectCategory;
 
+    final Label totalQuantity;
+
     final Grid<Item> grid;
 
     final TextField filter;
@@ -42,20 +45,27 @@ public class MainView extends VerticalLayout {
         this.priceFilterLessThanOrEqual = new NumberField();
         this.grid = new Grid<>(Item.class);
         this.filter = new TextField();
+        this.totalQuantity = new Label("Total items: " + repo.getTotalQuantity());
         this.addNewBtn = new Button("New item", VaadinIcon.PLUS.create());
         this.selectFilterCategory = new Select<>("Show all", "By price", "By categories", "5 last added");
 //        this.selectCategory = new Select<>(repo.getCategory())
 
-        System.out.println(repo.findAll());
 
         // Build layout
         grid.setHeight("300px");
-        HorizontalLayout actions = new HorizontalLayout(selectFilterCategory, filter, priceFilterMoreThan, priceFilterLessThanOrEqual, addNewBtn);
+        HorizontalLayout actions = new HorizontalLayout(selectFilterCategory, filter, priceFilterMoreThan, priceFilterLessThanOrEqual
+                , addNewBtn, totalQuantity);
         add(actions, grid, editor);
 
         grid.setHeight("300px");
         grid.setColumns("id", "name", "price", "category", "quantity");
         grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
+
+        // Set label style
+//        totalQuantity.setStyleName( "big_label"); // For control in CSS using .big_label{}  (for example)
+//        totalQuantity.setContentMode( Label.CONTENT_XHTML );  // Interpret the label's contents as XHTML rather than literally.
+//        totalQuantity.setValue( text.toString() );  // Fill the contents of the Label.
+
 
         // Dropdown for filtering options
         selectFilterCategory.setPlaceholder("Filter by...");
@@ -103,6 +113,9 @@ public class MainView extends VerticalLayout {
         editor.setChangeHandler(() -> {
             editor.setVisible(false);
             listItems(filter.getValue());
+
+            //update totalQuantity label each time something changes
+            totalQuantity.setText("Total items: " + repo.getTotalQuantity());
         });
 
         // Initialize listing
@@ -136,6 +149,7 @@ public class MainView extends VerticalLayout {
         if (selectFilterCategory.getValue().equals("By categories")) {
             filter.setVisible(true);
         } else {
+            filter.setValue("");
             filter.setVisible(false);
         }
     }
