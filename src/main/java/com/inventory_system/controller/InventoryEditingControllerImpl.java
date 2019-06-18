@@ -61,10 +61,17 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
                 .bind(Item::getName, Item::setName);
         binder.readBean(item);
 
+        // bind price
+        binder.forField(price)
+                .withValidator(price -> price > 0,
+                        "Name length must be at least two characters long.")
+                .bind(Item::getPrice, Item::setPrice);
+        binder.readBean(item);
+
         // bind quantity
         binder.forField(quantity)
                 .withConverter(new StringToIntegerConverter("Must be integer"))
-                .withValidator(quantity -> quantity >= 0 && quantity <= 5,
+                .withValidator(quantity -> quantity >= 0 && quantity <= 5 && (quantity + itemRepository.getTotalQuantity() < 200),
                         "Quantity must be a number between 0 and 5 inclusive.")
                 .bind(Item::getQuantity, Item::setQuantity);
         binder.readBean(item);
@@ -75,18 +82,19 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         // Configure and style components
         setSpacing(true);
 
-        // Validate item
-//        @PostMapping("/items")
-//        ResponseEntity<String> addUser(@Valid @RequestBody Item item) {
-//            // persisting the user
-//            return ResponseEntity.ok("Item is valid");
-//        }
 
 
         save.getElement().getThemeList().add("primary");
         delete.getElement().getThemeList().add("error");
 
         addKeyPressListener(Key.ENTER, e -> save());
+
+        // Validate item
+//        @PostMapping("/items")
+//        ResponseEntity<String> addUser(@Valid @RequestBody Item item) {
+//            // persisting the user
+//            return ResponseEntity.ok("Item is valid");
+//        }
 
         // wire action buttons to save, delete and reset
         save.addClickListener(e -> save());

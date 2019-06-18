@@ -1,6 +1,5 @@
 package com.inventory_system.model;
 
-import com.inventory_system.exceptions.QuantityInputMismatch;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
