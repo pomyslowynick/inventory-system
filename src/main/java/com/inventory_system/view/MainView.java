@@ -24,7 +24,7 @@ public class MainView extends VerticalLayout {
 
     final Select<String> selectFilterCategory;
 
-//    final Select<String> selectCategory;
+    final Select<String> selectCategory;
 
     final Label totalQuantity;
 
@@ -48,34 +48,37 @@ public class MainView extends VerticalLayout {
         this.totalQuantity = new Label("Total items: " + repo.getTotalQuantity());
         this.addNewBtn = new Button("New item", VaadinIcon.PLUS.create());
         this.selectFilterCategory = new Select<>("Show all", "By price", "By categories", "5 last added");
-//        this.selectCategory = new Select<>(repo.getCategory())
+        this.selectCategory = new Select<String>();
+        selectCategory.setItems(repo.getAllCategories());
 
 
         // Build layout
         grid.setHeight("300px");
-        HorizontalLayout actions = new HorizontalLayout(selectFilterCategory, filter, priceFilterMoreThan, priceFilterLessThanOrEqual
-                , addNewBtn, totalQuantity);
+        HorizontalLayout actions = new HorizontalLayout(selectFilterCategory, filter, selectCategory, priceFilterMoreThan, 
+                priceFilterLessThanOrEqual, addNewBtn, totalQuantity);
         add(actions, grid, editor);
 
         grid.setHeight("300px");
         grid.setColumns("id", "name", "price", "category", "quantity");
         grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
 
-        // Set label style
-//        totalQuantity.setStyleName( "big_label"); // For control in CSS using .big_label{}  (for example)
-//        totalQuantity.setContentMode( Label.CONTENT_XHTML );  // Interpret the label's contents as XHTML rather than literally.
-//        totalQuantity.setValue( text.toString() );  // Fill the contents of the Label.
-
-
         // Dropdown for filtering options
         selectFilterCategory.setPlaceholder("Filter by...");
         selectFilterCategory.setValue("Show all");
         filter.setPlaceholder("Filter text...");
 
-        // Set price and String filters to  be not visible at start
+        // Set price, text, category filters to be not visible at start
         priceFilterMoreThan.setVisible(false);
         priceFilterLessThanOrEqual.setVisible(false);
+        selectCategory.setVisible(false);
         filter.setVisible(false);
+
+        // Set default category for category filter
+        /*
+            This is hardcoded value, if I will have time I will change to to custom query that returns
+            first category.
+         */
+        selectCategory.setValue("DIY");
 
         // Set default values for price filters
         priceFilterMoreThan.setValue(0.0);
@@ -90,8 +93,11 @@ public class MainView extends VerticalLayout {
 
         // Change products ordering when new filter option is selected
         selectFilterCategory.addValueChangeListener(e -> listItems(""));
-        selectFilterCategory.addValueChangeListener(e -> changeFilterVisibility());
+
+        // Change filters visibility when new filter is selected
+        selectFilterCategory.addValueChangeListener(e -> changeStringFilterVisibility());
         selectFilterCategory.addValueChangeListener(e -> changePriceFilterVisibility());
+        selectFilterCategory.addValueChangeListener(e -> changeCategoryFilterVisibility());
 
         // Add listeners for price filters
         priceFilterLessThanOrEqual.setValueChangeMode(ValueChangeMode.EAGER);
@@ -99,6 +105,9 @@ public class MainView extends VerticalLayout {
 
         priceFilterMoreThan.setValueChangeMode(ValueChangeMode.EAGER);
         priceFilterMoreThan.addValueChangeListener(e -> listItems(null));
+
+        // Add listeners for category select filter
+        selectCategory.addValueChangeListener(e -> listItems(null));
 
 
         // Connect selected Item to editor or hide if none is selected
@@ -133,10 +142,13 @@ public class MainView extends VerticalLayout {
             double temp2 = priceFilterMoreThan.getValue();
             grid.setItems(repo.findByPriceLessThanEqualAndPriceGreaterThanEqual(temp1, temp2));
         } else if (selectFilterCategory.getValue().equals("By categories")) {
-            grid.setItems(repo.findByCategoryContainsIgnoreCase(filterText));
+            grid.setItems(repo.findByCategoryEquals(selectCategory.getValue()));
         } else {
             grid.setItems(repo.findAll());
         }
+//        else if (selectFilterCategory.getValue().equals("By categories")) {
+//            grid.setItems(repo.findByCategoryContainsIgnoreCase(filterText));
+//        }
     }
 
     //         tag::listItems[]
@@ -144,18 +156,26 @@ public class MainView extends VerticalLayout {
 //
 //         end::listItems[]
 
-    // Hide filter text unless we filter by categories
-    void changeFilterVisibility() {
+    // Hide text filter unless we filter by categories
+    void changeStringFilterVisibility() {
         if (selectFilterCategory.getValue().equals("By categories")) {
-            filter.setVisible(true);
+            filter.setVisible(false);
         } else {
             filter.setValue("");
             filter.setVisible(false);
         }
     }
 
-//    }
+    // Hide filter text unless we filter by categories
+    void changeCategoryFilterVisibility() {
+        if (selectFilterCategory.getValue().equals("By categories")) {
+            selectCategory.setVisible(true);
+        } else {
+            selectCategory.setVisible(false);
+        }
+    }
 
+    // Hide price filters when "By price" is not selected
     void changePriceFilterVisibility() {
         if (selectFilterCategory.getValue().equals("By price")) {
             priceFilterMoreThan.setVisible(true);
@@ -167,5 +187,5 @@ public class MainView extends VerticalLayout {
             priceFilterLessThanOrEqual.setValue(100.0);
         }
     }
-    }
+}
 

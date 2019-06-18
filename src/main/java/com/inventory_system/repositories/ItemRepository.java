@@ -15,9 +15,12 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByCategoryContainsIgnoreCase(String category);
 
+    List<Item> findByCategoryEquals(String category);
+
     @Query("SELECT SUM(quantity) FROM Item")
     int getTotalQuantity();
 
-    @Query("SELECT category FROM Item")
+    @Query("SELECT DISTINCT category FROM Item")
     List<String> getAllCategories();
+
 }

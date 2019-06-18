@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -23,9 +24,10 @@ public class Item {
     private String name;
 
     @NotNull(message = "Price is mandatory")
+    @Min(1)
     private Double price;
 
-    @NotBlank(message = "category is mandatory")
+    @NotBlank(message = "Category is mandatory")
     private String category;
 
     @Range(min=0, max=5)

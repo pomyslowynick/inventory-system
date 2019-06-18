@@ -75,10 +75,6 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         // Configure and style components
         setSpacing(true);
 
-        // Set maximum and minimum amount for quantity
-//        quantity.setMin(0);
-//        quantity.setMax(5);
-
         // Validate item
 //        @PostMapping("/items")
 //        ResponseEntity<String> addUser(@Valid @RequestBody Item item) {
