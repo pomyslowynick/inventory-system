@@ -123,8 +123,11 @@ public class MainView extends VerticalLayout {
             editor.setVisible(false);
             listItems(filter.getValue());
 
-            //update totalQuantity label each time something changes
+            // Update totalQuantity label each time edit happens
             totalQuantity.setText("Total items: " + repo.getTotalQuantity());
+
+            // Update the categories each time some edit happens
+            selectCategory.setItems(repo.getAllCategories());
         });
 
         // Initialize listing

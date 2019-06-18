@@ -71,8 +71,10 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         // bind quantity
         binder.forField(quantity)
                 .withConverter(new StringToIntegerConverter("Must be integer"))
-                .withValidator(quantity -> quantity >= 0 && quantity <= 5 && (quantity + itemRepository.getTotalQuantity() < 200),
+                .withValidator(quantity -> quantity >= 0 && quantity <= 5,
                         "Quantity must be a number between 0 and 5 inclusive.")
+                .withValidator(quantity -> (quantity + itemRepository.getTotalQuantity() <= 200),
+                "You can't have more than 200 itens.")
                 .bind(Item::getQuantity, Item::setQuantity);
         binder.readBean(item);
 

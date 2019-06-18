@@ -4,10 +4,10 @@ import com.inventory_system.model.Item;
 
 public interface InventoryEditingController {
 
-    Item addItem(Item item);
+    void save();
 
-    Item updateItem(Item item);
+    void editItem(Item item);
 
-    void deleteItemByID(Long id);
+    void delete();
 
 }
