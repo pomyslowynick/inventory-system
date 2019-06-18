@@ -6,6 +6,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyNotifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -44,6 +45,7 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
     Button reset = new Button("Reset");
     Button delete = new Button("Delete", VaadinIcon.TRASH.create());
     HorizontalLayout actions = new HorizontalLayout(save, cancel, delete, reset);
+    Notification notification = new Notification("Error has occured, can't add new item.", 3000);
 
     Binder<Item> binder = new Binder<>(Item.class);
     private ChangeHandler changeHandler;
@@ -84,7 +86,11 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         // Configure and style components
         setSpacing(true);
 
-
+        // Show error notification if can't create new Item
+        /*
+            Got to implement that so it shows only on actual errors
+         */
+        save.addClickListener(e -> notification.open());
 
         save.getElement().getThemeList().add("primary");
         delete.getElement().getThemeList().add("error");
