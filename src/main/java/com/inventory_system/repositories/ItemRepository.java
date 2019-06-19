@@ -13,7 +13,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findTop5ByOrderByIdDesc();
 
-    List<Item> findByCategoryContainsIgnoreCase(String category);
 
     List<Item> findByCategoryEquals(String category);
 

@@ -11,7 +11,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
@@ -31,8 +30,6 @@ public class MainView extends VerticalLayout {
 
     final Grid<Item> grid;
 
-    final TextField filter;
-
     final NumberField priceFilterMoreThan;
 
     final NumberField priceFilterLessThanOrEqual;
@@ -45,7 +42,6 @@ public class MainView extends VerticalLayout {
         this.priceFilterMoreThan = new NumberField();
         this.priceFilterLessThanOrEqual = new NumberField();
         this.grid = new Grid<>(Item.class);
-        this.filter = new TextField();
         this.totalQuantity = new Label("Total items: " + repo.getTotalQuantity());
         this.addNewBtn = new Button("New item", VaadinIcon.PLUS.create());
         this.selectFilterCategory = new Select<>("Show all", "By price", "By categories", "5 last added");
@@ -55,7 +51,7 @@ public class MainView extends VerticalLayout {
 
         // Build layout
         grid.setHeight("300px");
-        HorizontalLayout actions = new HorizontalLayout(selectFilterCategory, filter, selectCategory, priceFilterMoreThan, 
+        HorizontalLayout actions = new HorizontalLayout(selectFilterCategory, selectCategory, priceFilterMoreThan,
                 priceFilterLessThanOrEqual, addNewBtn, totalQuantity);
         add(actions, grid, editor);
 
@@ -66,13 +62,11 @@ public class MainView extends VerticalLayout {
         // Dropdown for filtering options
         selectFilterCategory.setPlaceholder("Filter by...");
         selectFilterCategory.setValue("Show all");
-        filter.setPlaceholder("Filter text...");
 
         // Set price, text, category filters to be not visible at start
         priceFilterMoreThan.setVisible(false);
         priceFilterLessThanOrEqual.setVisible(false);
         selectCategory.setVisible(false);
-        filter.setVisible(false);
 
         // Set default category for category filter
         /*
@@ -86,29 +80,23 @@ public class MainView extends VerticalLayout {
         priceFilterLessThanOrEqual.setValue(100.0);
 
 
-        // Hook logic to components
-
-        // Replace listing with filtered content when user changes filter
-        filter.setValueChangeMode(ValueChangeMode.EAGER);
-        filter.addValueChangeListener(e -> listItems(e.getValue()));
 
         // Change products ordering when new filter option is selected
-        selectFilterCategory.addValueChangeListener(e -> listItems(""));
+        selectFilterCategory.addValueChangeListener(e -> listItems());
 
         // Change filters visibility when new filter is selected
-        selectFilterCategory.addValueChangeListener(e -> changeStringFilterVisibility());
         selectFilterCategory.addValueChangeListener(e -> changePriceFilterVisibility());
         selectFilterCategory.addValueChangeListener(e -> changeCategoryFilterVisibility());
 
         // Add listeners for price filters
         priceFilterLessThanOrEqual.setValueChangeMode(ValueChangeMode.EAGER);
-        priceFilterLessThanOrEqual.addValueChangeListener(e -> listItems(null));
+        priceFilterLessThanOrEqual.addValueChangeListener(e -> listItems());
 
         priceFilterMoreThan.setValueChangeMode(ValueChangeMode.EAGER);
-        priceFilterMoreThan.addValueChangeListener(e -> listItems(null));
+        priceFilterMoreThan.addValueChangeListener(e -> listItems());
 
         // Add listeners for category select filter
-        selectCategory.addValueChangeListener(e -> listItems(null));
+        selectCategory.addValueChangeListener(e -> listItems());
 
 
         // Connect selected Item to editor or hide if none is selected
@@ -122,7 +110,7 @@ public class MainView extends VerticalLayout {
         // Listen to changes made by the editor, refresh data from backend
         editor.setChangeHandler(() -> {
             editor.setVisible(false);
-            listItems(filter.getValue());
+//            listItems(filter.getValue());
 
             // Update totalQuantity label each time edit happens
             totalQuantity.setText("Total items: " + repo.getTotalQuantity());
@@ -138,10 +126,11 @@ public class MainView extends VerticalLayout {
         });
 
         // Initialize listing
-        listItems(null);
+        listItems();
     }
 
-    void listItems(String filterText) {
+    // Method to populate grid with filtered queries.
+    void listItems() {
         if (selectFilterCategory.getValue().equals("Show all")) {
             grid.setItems(repo.findAll());
         } else if (selectFilterCategory.getValue().equals("5 last added")) {
@@ -156,25 +145,8 @@ public class MainView extends VerticalLayout {
         } else {
             grid.setItems(repo.findAll());
         }
-//        else if (selectFilterCategory.getValue().equals("By categories")) {
-//            grid.setItems(repo.findByCategoryContainsIgnoreCase(filterText));
-//        }
     }
 
-    //         tag::listItems[]
-//    void filterByPrice(Double minValue, Double maxValue) {
-//
-//         end::listItems[]
-
-    // Hide text filter unless we filter by categories
-    void changeStringFilterVisibility() {
-        if (selectFilterCategory.getValue().equals("By categories")) {
-            filter.setVisible(false);
-        } else {
-            filter.setValue("");
-            filter.setVisible(false);
-        }
-    }
 
     // Hide filter text unless we filter by categories
     void changeCategoryFilterVisibility() {

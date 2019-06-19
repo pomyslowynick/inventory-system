@@ -30,6 +30,8 @@ public class DriverCode implements CommandLineRunner {
         itemRepository.save(new Item("pencil", 4.50, "Office/School", 0));
         itemRepository.save(new Item("ruler", 3.00, "Office/School", 2));
         itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
+        itemRepository.save(new Item("Work trousers", 10.99, "Clothes", 5));
+        itemRepository.save(new Item("Microwave", 10.99, "Kitchen Appliances", 5));
 
         System.out.println(" Items saved: " + itemRepository.count());
     }
