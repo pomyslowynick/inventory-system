@@ -17,19 +17,14 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 
 @SpringComponent
 @UIScope
 @RestController
-public class InventoryEditingControllerImpl extends VerticalLayout implements KeyNotifier {
+public class InventoryEditingControllerImpl extends VerticalLayout implements KeyNotifier, InventoryEditingController {
 
     private final ItemRepository itemRepository;
     private Item item;
@@ -111,7 +106,8 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         // wire action buttons to save, delete and reset
         save.addClickListener(e -> save());
         delete.addClickListener(e -> delete());
-        cancel.addClickListener(e -> editItem(item));
+        reset.addClickListener(e -> editItem(item));
+        cancel.addClickListener(e -> setVisible(false));
         setVisible(false);
     }
 
@@ -149,7 +145,7 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         else {
             item = c;
         }
-        cancel.setVisible(persisted);
+        reset.setVisible(persisted);
 
         // Bind Item properties to similarly named fields
         // Could also use annotation or "manual binding" or programmatically

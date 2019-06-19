@@ -8,9 +8,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@WebAppConfiguration
 public class InventorySystemApplicationTests {
 
     @Test
@@ -51,7 +53,8 @@ public class InventorySystemApplicationTests {
 
         // Make sure database is empty
         repository.deleteAll();
-//        Assertions.assertThat(repository.getTotalQuantity()).isNull();
+        System.out.println(repository.getTotalQuantity());
+        Assertions.assertThat(repository.getTotalQuantity()).isNull();
 
         // Fill database to maximum capacity
         repository.save(item);
@@ -64,12 +67,14 @@ public class InventorySystemApplicationTests {
         // Make sure that inventory is full
         Assertions.assertThat(repository.getTotalQuantity()).isEqualTo(200);
 
-        // Try to add one more item
-//        repository.save(itemJustOne);
+        //Try to add one more item
+        repository.save(itemJustOne);
 
         // Assert that item count is not above maximum
-//        Assertions.assertThat(repository.getTotalQuantity()).isEqualTo(200);
+        Assertions.assertThat(repository.getTotalQuantity()).isEqualTo(200);
 
     }
+
+
 
 }

@@ -13,10 +13,14 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Route
+@RequestMapping(MainView.BASE_URL)
 public class MainView extends VerticalLayout {
+
+    public static final String BASE_URL = "api/v1/main";
 
     private final ItemRepository repo;
 
@@ -48,7 +52,11 @@ public class MainView extends VerticalLayout {
         this.selectCategory = new Select<String>();
         selectCategory.setItems(repo.getAllCategories());
 
+        buildUI();
+    }
 
+
+    void buildUI() {
         // Build layout
         grid.setHeight("300px");
         HorizontalLayout actions = new HorizontalLayout(selectFilterCategory, selectCategory, priceFilterMoreThan,

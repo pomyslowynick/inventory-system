@@ -16,6 +16,8 @@
 
 ![Inventory System Screen Shot](https://github.com/pomyslowynick/inventory-system/blob/master/images/inventory_system_menu_screenshot.png)
 
+[Link to Project on GitHub](ttps://github.com/pomyslowynick/inventory-system)
+
 This my Inventory System project that I made for my Graduate Software Developer Interview, I tried to make it to the best of my ability and use time available to me as efficiently as possible.
 It was made using Spring Boot and Vaadin Java frameworks.
 Main features of my application:
