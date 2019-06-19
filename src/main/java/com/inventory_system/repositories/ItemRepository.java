@@ -3,7 +3,6 @@ package com.inventory_system.repositories;
 import com.inventory_system.model.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -22,4 +21,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("SELECT DISTINCT category FROM Item")
     List<String> getAllCategories();
 
+    List<String> findByIdEquals(Long id);
 }

@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Route
-@RequestMapping(MainView.BASE_URL)
+@RequestMapping("/")
 public class MainView extends VerticalLayout {
 
-    public static final String BASE_URL = "api/v1/main";
 
     private final ItemRepository repo;
 

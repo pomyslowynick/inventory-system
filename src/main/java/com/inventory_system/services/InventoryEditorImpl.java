@@ -18,12 +18,10 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 
 
 @SpringComponent
 @UIScope
-@RestController
 public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, InventoryEditor {
 
     private final ItemRepository itemRepository;
@@ -49,9 +47,39 @@ public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, 
     @Autowired
     public InventoryEditorImpl(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
+    }
 
-        add(name, price, category, quantity,  actions);
+    void setupListeners() {
 
+        add(name, price, category, quantity, actions);
+
+        // Configure and style components
+        setSpacing(true);
+
+        // Show error notification if can't create new Item
+    /*
+        Could use exact error messags, consider implementing when I have more time.
+     */
+        try {
+            save.getElement().getThemeList().add("primary");
+        } catch(ConstraintViolationException error) {
+            save.addClickListener(e -> notification.open());
+        }
+
+        delete.getElement().getThemeList().add("error");
+
+        addKeyPressListener(Key.ENTER, e -> save());
+
+        // wire action buttons to save, delete and reset
+        save.addClickListener(e -> save());
+        delete.addClickListener(e -> delete());
+        reset.addClickListener(e -> editItem(item));
+        cancel.addClickListener(e -> setVisible(false));
+        setVisible(false);
+    }
+
+
+    void setupBinders() {
         // bind name
         binder.forField(name)
                 .withValidator(name -> name.length() > 2,
@@ -72,43 +100,12 @@ public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, 
                 .withValidator(quantity -> quantity >= 0 && quantity <= 5,
                         "Quantity must be a number between 0 and 5 inclusive.")
                 .withValidator(quantity -> (quantity + itemRepository.getTotalQuantity() <= 200),
-                "You can't have more than 200 itens.")
+                        "You can't have more than 200 itens.")
                 .bind(Item::getQuantity, Item::setQuantity);
         binder.readBean(item);
 
         // bind using naming convention
         binder.bindInstanceFields(this);
-
-        // Configure and style components
-        setSpacing(true);
-
-        // Show error notification if can't create new Item
-        /*
-            Got to implement that so it shows only on actual errors
-         */
-        try {
-            save.getElement().getThemeList().add("primary");
-        } catch(ConstraintViolationException error) {
-            save.addClickListener(e -> notification.open());
-        }
-
-        delete.getElement().getThemeList().add("error");
-
-        addKeyPressListener(Key.ENTER, e -> save());
-
-        // Validate item
-//        @PostMapping("/items")
-//        ResponseEntity<String> addUser(@Valid @RequestBody Item item) {
-//            // persisting the user
-//            return ResponseEntity.ok("Item is valid");
-//        }
-
-        // wire action buttons to save, delete and reset
-        save.addClickListener(e -> save());
-        delete.addClickListener(e -> delete());
-        reset.addClickListener(e -> editItem(item));
-        cancel.addClickListener(e -> setVisible(false));
-        setVisible(false);
     }
 
     void delete() {
@@ -163,6 +160,7 @@ public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, 
         // is clicked
         changeHandler = h;
     }
+
     @ExceptionHandler({ ConstraintViolationException.class })
     public void handleSaveException() {
         save.addClickListener(e -> notification.open());
