@@ -1,4 +1,4 @@
-package com.inventory_system.drvierCode;
+package com.inventory_system.driverCode;
 
 import com.inventory_system.model.Item;
 import com.inventory_system.repositories.ItemRepository;

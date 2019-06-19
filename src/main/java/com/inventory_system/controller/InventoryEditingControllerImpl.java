@@ -15,8 +15,10 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +41,6 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
     TextField quantity= new TextField("Quantity");
 
     /* Action buttons */
-    // TODO why more code?
     Button save = new Button("Save", VaadinIcon.CHECK.create());
     Button cancel = new Button("Cancel");
     Button reset = new Button("Reset");
@@ -66,7 +67,7 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         // bind price
         binder.forField(price)
                 .withValidator(price -> price > 0,
-                        "Name length must be at least two characters long.")
+                        "Price can't be negative or zero.")
                 .bind(Item::getPrice, Item::setPrice);
         binder.readBean(item);
 
@@ -90,9 +91,12 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         /*
             Got to implement that so it shows only on actual errors
          */
-        save.addClickListener(e -> notification.open());
+        try {
+            save.getElement().getThemeList().add("primary");
+        } catch(ConstraintViolationException error) {
+            save.addClickListener(e -> notification.open());
+        }
 
-        save.getElement().getThemeList().add("primary");
         delete.getElement().getThemeList().add("error");
 
         addKeyPressListener(Key.ENTER, e -> save());
@@ -116,9 +120,13 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         changeHandler.onChange();
     }
 
-    void save() {
-        itemRepository.save(item);
-        changeHandler.onChange();
+    void save() throws ConstraintViolationException {
+        try {
+            itemRepository.save(item);
+            changeHandler.onChange();
+        } catch (ConstraintViolationException e) {
+            notification.open();
+        }
     }
 
     public interface ChangeHandler {
@@ -155,5 +163,9 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
         // ChangeHandler is notified when either save or delete
         // is clicked
         changeHandler = h;
+    }
+    @ExceptionHandler({ ConstraintViolationException.class })
+    public void handleSaveException() {
+        save.addClickListener(e -> notification.open());
     }
 }
