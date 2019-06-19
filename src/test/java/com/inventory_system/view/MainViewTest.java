@@ -1,6 +1,6 @@
 package com.inventory_system.view;
 
-import com.inventory_system.controller.InventoryEditingControllerImpl;
+import com.inventory_system.services.InventoryEditorImpl;
 import com.inventory_system.model.Item;
 import com.inventory_system.repositories.ItemRepository;
 import org.assertj.core.api.Assertions;
@@ -27,7 +27,7 @@ public class MainViewTest {
     ItemRepository itemRepository;
 
     @Mock
-    InventoryEditingControllerImpl editor;
+    InventoryEditorImpl editor;
 
     @Mock
     Item item;

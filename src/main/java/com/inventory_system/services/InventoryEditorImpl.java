@@ -1,4 +1,4 @@
-package com.inventory_system.controller;
+package com.inventory_system.services;
 
 import com.inventory_system.model.Item;
 import com.inventory_system.repositories.ItemRepository;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringComponent
 @UIScope
 @RestController
-public class InventoryEditingControllerImpl extends VerticalLayout implements KeyNotifier, InventoryEditingController {
+public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, InventoryEditor {
 
     private final ItemRepository itemRepository;
     private Item item;
@@ -47,7 +47,7 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
     private ChangeHandler changeHandler;
 
     @Autowired
-    public InventoryEditingControllerImpl(ItemRepository itemRepository) {
+    public InventoryEditorImpl(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
 
         add(name, price, category, quantity,  actions);

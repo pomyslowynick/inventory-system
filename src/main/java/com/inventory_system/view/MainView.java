@@ -1,6 +1,6 @@
 package com.inventory_system.view;
 
-import com.inventory_system.controller.InventoryEditingControllerImpl;
+import com.inventory_system.services.InventoryEditorImpl;
 import com.inventory_system.model.Item;
 import com.inventory_system.repositories.ItemRepository;
 import com.vaadin.flow.component.button.Button;
@@ -24,7 +24,7 @@ public class MainView extends VerticalLayout {
 
     private final ItemRepository repo;
 
-    private final InventoryEditingControllerImpl editor;
+    private final InventoryEditorImpl editor;
 
     final Select<String> selectFilterCategory;
 
@@ -40,7 +40,7 @@ public class MainView extends VerticalLayout {
 
     private final Button addNewBtn;
 
-    public MainView(ItemRepository repo, InventoryEditingControllerImpl editor) {
+    public MainView(ItemRepository repo, InventoryEditorImpl editor) {
         this.repo = repo;
         this.editor = editor;
         this.priceFilterMoreThan = new NumberField();

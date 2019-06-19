@@ -1,8 +1,8 @@
-package com.inventory_system.controller;
+package com.inventory_system.services;
 
 import com.inventory_system.model.Item;
 
-public interface InventoryEditingController {
+public interface InventoryEditor {
 
     void editItem(Item item);
 

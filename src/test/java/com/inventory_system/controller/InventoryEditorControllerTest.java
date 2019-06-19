@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SpringBootTest
 @WebAppConfiguration
-public class InventoryEditingControllerTest {
+public class InventoryEditorControllerTest {
 
     @Autowired
     ItemRepository repository;
