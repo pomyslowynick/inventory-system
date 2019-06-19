@@ -5,11 +5,17 @@ import com.inventory_system.repositories.ItemRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+/**
+ *  Class made in order to give initial population to application.
+ */
 @Component
 public class DriverCode implements CommandLineRunner {
 
     private final ItemRepository itemRepository;
 
+    /**
+     * @param itemRepository
+     */
     public DriverCode( ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
@@ -23,42 +29,6 @@ public class DriverCode implements CommandLineRunner {
         itemRepository.save(new Item("pen", 5.49, "Office/School", 4));
         itemRepository.save(new Item("pencil", 4.50, "Office/School", 0));
         itemRepository.save(new Item("ruler", 3.00, "Office/School", 2));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
-        itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
         itemRepository.save(new Item("notebook", 10.99, "Office/School", 5));
 
         System.out.println(" Items saved: " + itemRepository.count());

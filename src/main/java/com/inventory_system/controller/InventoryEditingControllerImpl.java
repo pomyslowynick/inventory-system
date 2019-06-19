@@ -66,7 +66,7 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
 
         // bind price
         binder.forField(price)
-                .withValidator(price -> price > 0,
+                .withValidator(price -> price > 0.0,
                         "Price can't be negative or zero.")
                 .bind(Item::getPrice, Item::setPrice);
         binder.readBean(item);
@@ -122,9 +122,12 @@ public class InventoryEditingControllerImpl extends VerticalLayout implements Ke
 
     void save() throws ConstraintViolationException {
         try {
+            if(itemRepository.getTotalQuantity() + item.getQuantity() > 200) {
+                throw new Exception();
+            }
             itemRepository.save(item);
             changeHandler.onChange();
-        } catch (ConstraintViolationException e) {
+        } catch (Exception e) {
             notification.open();
         }
     }
