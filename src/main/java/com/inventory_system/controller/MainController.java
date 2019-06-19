@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ *  This controller class should serve http requests in case UI is not needed, I haven't figured out how to make same
+ *  requests using Vaadin URI's, so this class stays as a potential extension or if UI support should be dropped.
+ */
 /*
     When declared the controller class takes over http requests< I couldnt make it cooperate with Vaadin.
  */

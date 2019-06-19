@@ -6,7 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 /**
- *  Class made in order to give initial population to application.
+ *  Class made in order to give initial population to database, there's not much here.
  */
 @Component
 public class DriverCode implements CommandLineRunner {

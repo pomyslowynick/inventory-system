@@ -20,6 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 
+/**
+ * This class serves ass a service for editing UI and provides some validation with Vaadin's binder validators.
+ * There is some basic exception handling for validation errors, but it should be developed way more, would od it If I had time.
+ */
 @SpringComponent
 @UIScope
 public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, InventoryEditor {
@@ -47,6 +51,8 @@ public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, 
     @Autowired
     public InventoryEditorImpl(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
+        setupBinders();
+        setupListeners();
     }
 
     void setupListeners() {
@@ -100,7 +106,7 @@ public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, 
                 .withValidator(quantity -> quantity >= 0 && quantity <= 5,
                         "Quantity must be a number between 0 and 5 inclusive.")
                 .withValidator(quantity -> (quantity + itemRepository.getTotalQuantity() <= 200),
-                        "You can't have more than 200 itens.")
+                        "You can't have more than 200 items.")
                 .bind(Item::getQuantity, Item::setQuantity);
         binder.readBean(item);
 

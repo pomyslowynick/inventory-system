@@ -11,6 +11,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Core of my application, basic class of every object in inventory, features automatically generated id
+ * and some validation thanks to Spring annotations. No parameters constructor is needed for Spring.
+ */
 @Data
 @Entity
 public class Item {

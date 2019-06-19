@@ -3,4 +3,5 @@ com.inventory_system.controller
 com.inventory_system.driverCode
 com.inventory_system.model
 com.inventory_system.repositories
+com.inventory_system.services
 com.inventory_system.view

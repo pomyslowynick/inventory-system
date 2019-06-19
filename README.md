@@ -14,7 +14,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Inventory System Screen Shot](https://github.com/pomyslowynick/inventory-system/blob/master/images/inventory_system_menu_screenshot.png)
+![Inventory System Screen Shot](images/inventory_system_menu_screenshot.png)
 
 [Link to Project on GitHub](ttps://github.com/pomyslowynick/inventory-system)
 
@@ -27,6 +27,8 @@ Main features of my application:
 * You can filter items by their category, price and display last 5 added items.
 
 This is RESTful API, calls are made using HTTP requests and data is transferred using JSON format.
+
+I have used [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) for code formatting.
 
 ### Built With
 Major components that I have used in building this application, smaller ones not mentioned here can be found in my pom.xml:
