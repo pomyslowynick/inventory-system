@@ -8,18 +8,17 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    List<Item> findByPriceLessThanEqualAndPriceGreaterThanEqual(double priceMin, double priceMax);
+  List<Item> findByPriceLessThanEqualAndPriceGreaterThanEqual(double priceMin, double priceMax);
 
-    List<Item> findTop5ByOrderByIdDesc();
+  List<Item> findTop5ByOrderByIdDesc();
 
+  List<Item> findByCategoryEquals(String category);
 
-    List<Item> findByCategoryEquals(String category);
+  @Query("SELECT SUM(quantity) FROM Item")
+  int getTotalQuantity();
 
-    @Query("SELECT SUM(quantity) FROM Item")
-    int getTotalQuantity();
+  @Query("SELECT DISTINCT category FROM Item")
+  List<String> getAllCategories();
 
-    @Query("SELECT DISTINCT category FROM Item")
-    List<String> getAllCategories();
-
-    List<String> findByIdEquals(Long id);
+  List<String> findByIdEquals(Long id);
 }

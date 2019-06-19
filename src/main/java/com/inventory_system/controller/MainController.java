@@ -10,59 +10,59 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *  This controller class should serve http requests in case UI is not needed, I haven't figured out how to make same
- *  requests using Vaadin URI's, so this class stays as a potential extension or if UI support should be dropped.
+ * This controller class should serve http requests in case UI is not needed, I haven't figured out
+ * how to make same requests using Vaadin URI's, so this class stays as a potential extension or if
+ * UI support should be dropped.
  */
 /*
-    When declared the controller class takes over http requests< I couldnt make it cooperate with Vaadin.
- */
-//@RestController
+   When declared the controller class takes over http requests< I couldnt make it cooperate with Vaadin.
+*/
+// @RestController
 public class MainController {
 
-    @Autowired
-    private final ItemRepository itemRepository;
+  @Autowired private final ItemRepository itemRepository;
 
-    private final InventoryEditorImpl editor;
+  private final InventoryEditorImpl editor;
 
-    public MainController(ItemRepository itemRepository, InventoryEditorImpl editor) {
-        this.itemRepository = itemRepository;
-        this.editor = editor;
-    }
+  public MainController(ItemRepository itemRepository, InventoryEditorImpl editor) {
+    this.itemRepository = itemRepository;
+    this.editor = editor;
+  }
 
-    @GetMapping("/getAll/item")
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
-    }
+  @GetMapping("/getAll/item")
+  public List<Item> getAllItems() {
+    return itemRepository.findAll();
+  }
 
-    @GetMapping("/getByCategory/{category}")
-    public List<Item> getItemsByCategory(@PathVariable String category) {
-        return itemRepository.findByCategoryEquals(category);
-    }
+  @GetMapping("/getByCategory/{category}")
+  public List<Item> getItemsByCategory(@PathVariable String category) {
+    return itemRepository.findByCategoryEquals(category);
+  }
 
-    @GetMapping("/getMostRecent")
-    public List<Item> getFiveMostRecent() {
-        return itemRepository.findTop5ByOrderByIdDesc();
-    }
+  @GetMapping("/getMostRecent")
+  public List<Item> getFiveMostRecent() {
+    return itemRepository.findTop5ByOrderByIdDesc();
+  }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Item saveItem(@RequestBody Item item) {
-        return itemRepository.save(item);
-    }
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public Item saveItem(@RequestBody Item item) {
+    return itemRepository.save(item);
+  }
 
-    @GetMapping("/remove/{id}")
-    public void deleteItemById(@PathVariable Long id) {
-        itemRepository.deleteById(id);
-    }
+  @GetMapping("/remove/{id}")
+  public void deleteItemById(@PathVariable Long id) {
+    itemRepository.deleteById(id);
+  }
 
-    @GetMapping("/getQuantity")
-    public int getQuantityInventory() {
-        return itemRepository.getTotalQuantity();
-    }
+  @GetMapping("/getQuantity")
+  public int getQuantityInventory() {
+    return itemRepository.getTotalQuantity();
+  }
 
-    @GetMapping("/getPriceBetween/{priceMin}and{priceMax}")
-    public List<Item> getItemPriceBetween(@PathVariable("priceMin") double priceMin, @PathVariable("priceMax") double priceMax) {
-        return itemRepository.findByPriceLessThanEqualAndPriceGreaterThanEqual(0, 100);
-    }
-
+  @GetMapping("/getPriceBetween/{priceMin}and{priceMax}")
+  public List<Item> getItemPriceBetween(
+      @PathVariable("priceMin") double priceMin, @PathVariable("priceMax") double priceMax) {
+    return itemRepository.findByPriceLessThanEqualAndPriceGreaterThanEqual(0, 100);
+  }
 }

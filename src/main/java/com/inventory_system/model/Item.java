@@ -12,46 +12,43 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * Core of my application, basic class of every object in inventory, features automatically generated id
- * and some validation thanks to Spring annotations. No parameters constructor is needed for Spring.
+ * Core of my application, basic class of every object in inventory, features automatically
+ * generated id and some validation thanks to Spring annotations. No parameters constructor is
+ * needed for Spring.
  */
 @Data
 @Entity
 public class Item {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @NotBlank(message = "Name is mandatory")
-    private String name;
+  @NotBlank(message = "Name is mandatory")
+  private String name;
 
-    @NotNull(message = "Price is mandatory")
-    @Min(1)
-    private Double price;
+  @NotNull(message = "Price is mandatory")
+  @Min(1)
+  private Double price;
 
-    @NotBlank(message = "Category is mandatory")
-    private String category;
+  @NotBlank(message = "Category is mandatory")
+  private String category;
 
-    @Range(min=0, max=5)
-    @NotNull(message = "Quantity is mandatory")
-    private int quantity;
+  @Range(min = 0, max = 5)
+  @NotNull(message = "Quantity is mandatory")
+  private int quantity;
 
-    public Item() {
-        this.name = null;
-        this.price = null;
-        this.category = null;
-        this.quantity = 0;
+  public Item() {
+    this.name = null;
+    this.price = null;
+    this.category = null;
+    this.quantity = 0;
+  }
 
-    }
-
-    public Item(String name, Double price, String category, int quantity) {
-        this.name = name;
-        this.price = price;
-        this.category = category;
-        this.quantity = quantity;
-
-
-    }
-
+  public Item(String name, Double price, String category, int quantity) {
+    this.name = name;
+    this.price = price;
+    this.category = category;
+    this.quantity = quantity;
+  }
 }

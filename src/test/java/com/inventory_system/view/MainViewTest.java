@@ -20,51 +20,41 @@ import static org.mockito.Mockito.when;
 @WebAppConfiguration
 public class MainViewTest {
 
-    @Mock
-    MainView view;
+  @Mock MainView view;
 
-    @Mock
-    ItemRepository itemRepository;
+  @Mock ItemRepository itemRepository;
 
-    @Mock
-    InventoryEditorImpl editor;
+  @Mock InventoryEditorImpl editor;
 
-    @Mock
-    Item item;
+  @Mock Item item;
 
-    //
-    @Test
-    public void testCategory() {
-        view.listItems();
-        when(item.getCategory()).thenReturn("DIY");
+  //
+  @Test
+  public void testCategory() {
+    view.listItems();
+    when(item.getCategory()).thenReturn("DIY");
 
-        // use mock in test....
-        assertEquals(item.getCategory(), "DIY");
-    }
+    // use mock in test....
+    assertEquals(item.getCategory(), "DIY");
+  }
 
+  @Test
+  public void testItemRepository() {
+    when(itemRepository.getTotalQuantity()).thenReturn(200);
+    Mockito.doThrow(new Exception()).when(editor).editItem(item);
+  }
 
-    @Test
-    public void testItemRepository() {
-        when(itemRepository.getTotalQuantity()).thenReturn(200);
-        Mockito.doThrow(new Exception()).when(editor).editItem(item);
+  @Test
+  public void listItems() {}
 
-    }
-    @Test
-    public void listItems() {
+  @Test
+  public void changeStringFilterVisibility() {}
 
-    }
+  @Test
+  public void changeCategoryFilterVisibility() {
+    Assertions.assertThat(1).isEqualTo(1);
+  }
 
-    @Test
-    public void changeStringFilterVisibility() {
-
-    }
-
-    @Test
-    public void changeCategoryFilterVisibility() {
-        Assertions.assertThat(1).isEqualTo(1);
-    }
-
-    @Test
-    public void changePriceFilterVisibility() {
-    }
+  @Test
+  public void changePriceFilterVisibility() {}
 }
