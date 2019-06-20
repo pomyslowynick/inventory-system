@@ -7,6 +7,8 @@ import com.inventory_system.repositories.ItemRepository;
 import com.inventory_system.services.InventoryEditorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -17,16 +19,15 @@ import org.springframework.web.bind.annotation.*;
 /*
    When declared the controller class takes over http requests< I couldnt make it cooperate with Vaadin.
 */
-// @RestController
+//@RestController
+@Component
 public class MainController {
 
   @Autowired private final ItemRepository itemRepository;
 
-  private final InventoryEditorImpl editor;
 
-  public MainController(ItemRepository itemRepository, InventoryEditorImpl editor) {
+  public MainController(ItemRepository itemRepository) {
     this.itemRepository = itemRepository;
-    this.editor = editor;
   }
 
   @GetMapping("/getAll/item")
@@ -55,7 +56,8 @@ public class MainController {
     itemRepository.deleteById(id);
   }
 
-  @GetMapping("/getQuantity")
+  @GetMapping("" +
+          "   `1")
   public int getQuantityInventory() {
     return itemRepository.getTotalQuantity();
   }

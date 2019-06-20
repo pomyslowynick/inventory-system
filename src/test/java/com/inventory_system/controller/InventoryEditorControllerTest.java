@@ -24,8 +24,6 @@ public class InventoryEditorControllerTest {
   public void testInsert() {
 
     Item item = new Item("Screw", 20.0, "DIY", 3);
-    Item item2 = new Item("Note", 20.0, "DIY", 3);
-    System.out.println("Test Starting \n\n\n");
     item = repository.save(item);
     Assertions.assertThat(repository.findById(item.getId()))
         .hasValue(item)

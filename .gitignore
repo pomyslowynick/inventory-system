@@ -29,6 +29,12 @@ hs_err_pid*
 .idea/**/dictionaries
 .idea/**/shelf
 
+# Maven specific files
+.mvn
+
+# Generated classes
+target
+
 # Generated files
 .idea/**/contentModel.xml
 

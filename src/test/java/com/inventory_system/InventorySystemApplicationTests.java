@@ -29,7 +29,6 @@ public class InventorySystemApplicationTests {
     Assertions.assertThat(repository.findById(item.getId()))
         .hasValue(item)
         .withFailMessage("Created item doesn't correspond to it's ID");
-    System.out.println("Test Successful \n\n\n");
   }
 
   // Test that after creating item with new category the new category gets created.
@@ -51,7 +50,6 @@ public class InventorySystemApplicationTests {
 
     // Make sure database is empty
     repository.deleteAll();
-    System.out.println(repository.getTotalQuantity());
     Assertions.assertThat(repository.getTotalQuantity()).isNull();
 
     // Fill database to maximum capacity
@@ -61,7 +59,6 @@ public class InventorySystemApplicationTests {
       repository.save(new Item("5 crayons", 3.0, "School", 5));
       i++;
     }
-    System.out.println(repository.getTotalQuantity());
     // Make sure that inventory is full
     Assertions.assertThat(repository.getTotalQuantity()).isEqualTo(200);
 

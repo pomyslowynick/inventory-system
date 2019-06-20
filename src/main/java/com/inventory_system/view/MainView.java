@@ -16,7 +16,7 @@ import com.vaadin.flow.router.Route;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * This is class that makes instance of Inventory System's interface using Vaadin framework, it uses
+ * This is class that makes instance of InventorSystem's interface using Vaadin framework, it uses
  * big if statement to filter the results, should consider refactoring it at some point
  */
 @Route
