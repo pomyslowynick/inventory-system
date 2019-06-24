@@ -15,6 +15,8 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.math.BigDecimal;
+
 /**
  * This is class that makes instance of InventorSystem's interface using Vaadin framework, it uses
  * big if statement to filter the results, should consider refactoring it at some point
@@ -60,6 +62,7 @@ public class MainView extends VerticalLayout {
   /*
      Should be split into smaller methods, but I ran out of time.
   */
+
   void buildUI() {
     // Build layout
     grid.setHeight("300px");
@@ -97,23 +100,6 @@ public class MainView extends VerticalLayout {
     priceFilterMoreThan.setValue(0.0);
     priceFilterLessThanOrEqual.setValue(100.0);
 
-    // Change products ordering when new filter option is selected
-    selectFilterCategory.addValueChangeListener(e -> listItems());
-
-    // Change filters visibility when new filter is selected
-    selectFilterCategory.addValueChangeListener(e -> changePriceFilterVisibility());
-    selectFilterCategory.addValueChangeListener(e -> changeCategoryFilterVisibility());
-
-    // Add listeners for price filters
-    priceFilterLessThanOrEqual.setValueChangeMode(ValueChangeMode.EAGER);
-    priceFilterLessThanOrEqual.addValueChangeListener(e -> listItems());
-
-    priceFilterMoreThan.setValueChangeMode(ValueChangeMode.EAGER);
-    priceFilterMoreThan.addValueChangeListener(e -> listItems());
-
-    // Add listeners for category select filter
-    selectCategory.addValueChangeListener(e -> listItems());
-
     // Connect selected Item to editor or hide if none is selected
     grid.asSingleSelect()
         .addValueChangeListener(
@@ -122,7 +108,7 @@ public class MainView extends VerticalLayout {
             });
 
     // Instantiate and edit new Item the new button is clicked
-    addNewBtn.addClickListener(e -> editor.editItem(new Item("", 0.0, "", 0)));
+    addNewBtn.addClickListener(e -> editor.editItem(new Item("", new BigDecimal(0.0), "", 0)));
 
     // Listen to changes made by the editor, refresh data from backend
     editor.setChangeHandler(
@@ -143,7 +129,27 @@ public class MainView extends VerticalLayout {
         });
 
     // Initialize listing
+    setupListeners();
     listItems();
+  }
+
+  void setupListeners() {
+    // Change products ordering when new filter option is selected
+    selectFilterCategory.addValueChangeListener(e -> listItems());
+
+    // Change filters visibility when new filter is selected
+    selectFilterCategory.addValueChangeListener(e -> changePriceFilterVisibility());
+    selectFilterCategory.addValueChangeListener(e -> changeCategoryFilterVisibility());
+
+    // Add listeners for price filters
+    priceFilterLessThanOrEqual.setValueChangeMode(ValueChangeMode.EAGER);
+    priceFilterLessThanOrEqual.addValueChangeListener(e -> listItems());
+
+    priceFilterMoreThan.setValueChangeMode(ValueChangeMode.EAGER);
+    priceFilterMoreThan.addValueChangeListener(e -> listItems());
+
+    // Add listeners for category select filter
+    selectCategory.addValueChangeListener(e -> listItems());
   }
 
   // Method to populate grid with filtered queries.

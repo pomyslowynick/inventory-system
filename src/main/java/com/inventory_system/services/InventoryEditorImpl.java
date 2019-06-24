@@ -19,6 +19,8 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.math.BigDecimal;
+
 /**
  * This class serves ass a service for editing UI and provides some validation with Vaadin's binder
  * validators. There is some basic exception handling for validation errors, but it should be
@@ -96,7 +98,7 @@ public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, 
     // bind price
     binder
         .forField(price)
-        .withValidator(price -> price > 0.0, "Price can't be negative or zero.")
+        .withValidator(price -> new BigDecimal(0.0001).compareTo(price), "Price can't be negative or zero.")
         .bind(Item::getPrice, Item::setPrice);
     binder.readBean(item);
 

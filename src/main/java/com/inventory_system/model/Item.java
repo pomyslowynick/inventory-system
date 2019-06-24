@@ -7,9 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+import java.math.BigDecimal;
 
 /**
  * Core of my application, basic class of every object in inventory, features automatically
@@ -28,8 +27,8 @@ public class Item {
   private String name;
 
   @NotNull(message = "Price is mandatory")
-  @Min(1)
-  private Double price;
+  @DecimalMin(value="0.001")
+  private BigDecimal price;
 
   @NotBlank(message = "Category is mandatory")
   private String category;
@@ -45,7 +44,7 @@ public class Item {
     this.quantity = 0;
   }
 
-  public Item(String name, Double price, String category, int quantity) {
+  public Item(String name, BigDecimal price, String category, int quantity) {
     this.name = name;
     this.price = price;
     this.category = category;
