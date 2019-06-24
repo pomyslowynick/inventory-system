@@ -99,7 +99,7 @@ public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, 
     binder
         .forField(price)
         .withValidator(price -> new BigDecimal(0.0001).compareTo(price), "Price can't be negative or zero.")
-        .bind(Item::getPrice, Item::setPrice);
+        .bind((Item::getPrice), Item::setPrice);
     binder.readBean(item);
 
     // bind quantity
