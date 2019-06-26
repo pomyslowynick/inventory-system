@@ -80,6 +80,26 @@ public class MainView extends VerticalLayout {
     grid.setColumns("id", "name", "price", "category", "quantity");
     grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
 
+    // Connect selected Item to editor or hide if none is selected
+    grid.asSingleSelect()
+        .addValueChangeListener(
+            e -> {
+              editor.editItem(e.getValue());
+            });
+
+    // Instantiate and edit new Item the new button is clicked
+    addNewBtn.addClickListener(e -> editor.editItem(new Item("", new BigDecimal(0.0), "", 0)));
+
+
+
+    // Initialize listing
+    setupListeners();
+    setInitialUIValues();
+    setupChangeHandler();
+    listItems();
+  }
+
+  void setInitialUIValues() {
     // Dropdown for filtering options
     selectFilterCategory.setPlaceholder("Filter by...");
     selectFilterCategory.setValue("Show all");
@@ -94,43 +114,32 @@ public class MainView extends VerticalLayout {
        This is hardcoded value, if I will have time I will change to to custom query that returns
        first category.
     */
-    selectCategory.setValue("DIY");
+    String category = repo.findTopByCategory();
+    selectCategory.setValue(category);
 
     // Set default values for price filters
     priceFilterMoreThan.setValue(0.0);
     priceFilterLessThanOrEqual.setValue(100.0);
+  }
 
-    // Connect selected Item to editor or hide if none is selected
-    grid.asSingleSelect()
-        .addValueChangeListener(
-            e -> {
-              editor.editItem(e.getValue());
-            });
-
-    // Instantiate and edit new Item the new button is clicked
-    addNewBtn.addClickListener(e -> editor.editItem(new Item("", new BigDecimal(0.0), "", 0)));
-
-    // Listen to changes made by the editor, refresh data from backend
+  void setupChangeHandler() {
+  // Listen to changes made by the editor, refresh data from backend
     editor.setChangeHandler(
-        () -> {
-          editor.setVisible(false);
-          //            listItems(filter.getValue());
+            () -> {
+    editor.setVisible(false);
+    //            listItems(filter.getValue());
 
-          // Update totalQuantity label each time edit happens
-          totalQuantity.setText("Total items: " + repo.getTotalQuantity());
+    // Update totalQuantity label each time edit happens
+    totalQuantity.setText("Total items: " + repo.getTotalQuantity());
 
-          // Store default category
-          String tempCategory = selectCategory.getValue();
-          // Update the categories each time some edit happens
-          selectCategory.setItems(repo.getAllCategories());
+    // Store default category
+    String tempCategory = selectCategory.getValue();
+    // Update the categories each time some edit happens
+    selectCategory.setItems(repo.getAllCategories());
 
-          // Setting default value again, gotta refactor that later
-          selectCategory.setValue(tempCategory);
-        });
-
-    // Initialize listing
-    setupListeners();
-    listItems();
+    // Setting default value again, gotta refactor that later
+    selectCategory.setValue(tempCategory);
+    });
   }
 
   void setupListeners() {

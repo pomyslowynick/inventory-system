@@ -14,6 +14,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
   List<Item> findByCategoryEquals(String category);
 
+  String findTopByCategory();
   @Query("SELECT SUM(quantity) FROM Item")
   int getTotalQuantity();
 
