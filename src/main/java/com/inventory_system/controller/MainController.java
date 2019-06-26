@@ -30,6 +30,9 @@ public class MainController {
     this.itemRepository = itemRepository;
   }
 
+  @GetMapping("/topCategory")
+  public String getTopCategory() { return itemRepository.findFirstCategory(); }
+
   @GetMapping("/getAll/item")
   public List<Item> getAllItems() {
     return itemRepository.findAll();

@@ -90,8 +90,6 @@ public class MainView extends VerticalLayout {
     // Instantiate and edit new Item the new button is clicked
     addNewBtn.addClickListener(e -> editor.editItem(new Item("", new BigDecimal(0.0), "", 0)));
 
-
-
     // Initialize listing
     setupListeners();
     setInitialUIValues();
@@ -114,7 +112,7 @@ public class MainView extends VerticalLayout {
        This is hardcoded value, if I will have time I will change to to custom query that returns
        first category.
     */
-    String category = repo.findTopByCategory();
+    String category = repo.findFirstCategory();
     selectCategory.setValue(category);
 
     // Set default values for price filters
@@ -132,13 +130,11 @@ public class MainView extends VerticalLayout {
     // Update totalQuantity label each time edit happens
     totalQuantity.setText("Total items: " + repo.getTotalQuantity());
 
-    // Store default category
-    String tempCategory = selectCategory.getValue();
     // Update the categories each time some edit happens
     selectCategory.setItems(repo.getAllCategories());
 
-    // Setting default value again, gotta refactor that later
-    selectCategory.setValue(tempCategory);
+    // Setting default value again
+    selectCategory.setValue(repo.findFirstCategory());
     });
   }
 
