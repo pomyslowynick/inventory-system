@@ -11,6 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @RunWith(SpringRunner.class)
 @Transactional
 @SpringBootTest
@@ -23,7 +25,7 @@ public class InventoryEditorControllerTest {
   @Test
   public void testInsert() {
 
-    Item item = new Item("Screw", 20.0, "DIY", 3);
+    Item item = new Item("Screw", new BigDecimal(20.0), "DIY", 3);
     item = repository.save(item);
     Assertions.assertThat(repository.findById(item.getId()))
         .hasValue(item)
@@ -34,8 +36,8 @@ public class InventoryEditorControllerTest {
   @Test
   public void testInventoryLimit() {
 
-    Item item = new Item("5 crayons", 3.0, "School", 5);
-    Item itemJustOne = new Item("1 crayon", 0.6, "School", 1);
+    Item item = new Item("5 crayons", new BigDecimal(3.0), "School", 5);
+    Item itemJustOne = new Item("1 crayon", new BigDecimal(3.0), "School", 1);
 
     // Make sure database is empty
     repository.deleteAll();
@@ -62,7 +64,7 @@ public class InventoryEditorControllerTest {
   @Test
   public void testCategoryExists() {
 
-    Item item = new Item("Stick", 3000.0, "Woodwork", 2);
+    Item item = new Item("Stick", new BigDecimal(3000.0), "Woodwork", 2);
 
     repository.save(item);
 

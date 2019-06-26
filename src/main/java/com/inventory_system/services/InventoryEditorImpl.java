@@ -12,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
@@ -35,7 +36,7 @@ public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, 
 
   /* Fields to edit properties in Item entity */
   TextField name = new TextField("Name");
-  NumberField price = new NumberField("Price");
+  TextField price = new TextField("Price");
   TextField category = new TextField("Category");
   TextField quantity = new TextField("Quantity");
 
@@ -98,7 +99,7 @@ public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, 
     // bind price
     binder
         .forField(price)
-        .withValidator(price -> new BigDecimal(0.0001).compareTo(price), "Price can't be negative or zero.")
+        .withConverter(new StringToBigDecimalConverter(""))
         .bind((Item::getPrice), Item::setPrice);
     binder.readBean(item);
 

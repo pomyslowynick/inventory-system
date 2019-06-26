@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.math.BigDecimal;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WebAppConfiguration
@@ -24,7 +26,7 @@ public class InventorySystemApplicationTests {
   @Test
   public void testInsert() {
 
-    Item item = new Item("Screw", 20.0, "DIY", 3);
+    Item item = new Item("Screw", new BigDecimal(20.0), "DIY", 3);
     item = repository.save(item);
     Assertions.assertThat(repository.findById(item.getId()))
         .hasValue(item)
@@ -35,7 +37,7 @@ public class InventorySystemApplicationTests {
   @Test
   public void testCategoryExists() {
 
-    Item item = new Item("Stick", 3000.0, "Woodwork", 2);
+    Item item = new Item("Stick", new BigDecimal(3000.0), "Woodwork", 2);
 
     repository.save(item);
 
@@ -45,8 +47,8 @@ public class InventorySystemApplicationTests {
   @Test
   public void testInventoryLimit() {
 
-    Item item = new Item("5 crayons", 3.0, "School", 5);
-    Item itemJustOne = new Item("1 crayon", 1.0, "School", 1);
+    Item item = new Item("5 crayons", new BigDecimal(3.0), "School", 5);
+    Item itemJustOne = new Item("1 crayon", new BigDecimal(3.0), "School", 1);
 
     // Make sure database is empty
     repository.deleteAll();
@@ -56,7 +58,7 @@ public class InventorySystemApplicationTests {
     repository.save(item);
     int i = 0;
     while (i < 39) {
-      repository.save(new Item("5 crayons", 3.0, "School", 5));
+      repository.save(new Item("5 crayons", new BigDecimal(3.0), "School", 5));
       i++;
     }
     // Make sure that inventory is full
