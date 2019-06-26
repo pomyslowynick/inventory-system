@@ -38,23 +38,23 @@ public class MainViewTest {
     assertEquals(item.getCategory(), "DIY");
   }
 
-  @Test
-  public void testItemRepository() {
-    when(itemRepository.getTotalQuantity()).thenReturn(200);
-    Mockito.doThrow(new Exception()).when(editor).editItem(item);
-  }
-
-  @Test
-  public void listItems() {}
-
-  @Test
-  public void changeStringFilterVisibility() {}
-
-  @Test
-  public void changeCategoryFilterVisibility() {
-    Assertions.assertThat(1).isEqualTo(1);
-  }
-
-  @Test
-  public void changePriceFilterVisibility() {}
+//  @Test
+//  public void testItemRepository() {
+//    when(itemRepository.getTotalQuantity()).thenReturn(200);
+//    Mockito.doThrow(new Exception()).when(editor).editItem(item);
+//  }
+//
+//  @Test
+//  public void listItems() {}
+//
+//  @Test
+//  public void changeStringFilterVisibility() {}
+//
+//  @Test
+//  public void changeCategoryFilterVisibility() {
+//    Assertions.assertThat(1).isEqualTo(1);
+//  }
+//
+//  @Test
+//  public void changePriceFilterVisibility() {}
 }
