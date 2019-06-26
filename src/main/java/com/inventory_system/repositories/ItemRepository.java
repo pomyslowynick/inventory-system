@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-  List<Item> findByPriceLessThanEqualAndPriceGreaterThanEqual(BigDecimal priceMin, BigDecimal priceMax);
+  List<Item> findByPriceGreaterThanEqualAndPriceLessThan(BigDecimal priceMin, BigDecimal priceMax);
 
   List<Item> findTop5ByOrderByIdDesc();
 

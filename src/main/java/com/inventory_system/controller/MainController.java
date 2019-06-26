@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 /*
    When declared the controller class takes over http requests< I couldnt make it cooperate with Vaadin.
 */
-@RestController
+//@RestController
 @Component
 public class MainController {
 
@@ -70,6 +70,6 @@ public class MainController {
       @PathVariable("priceMin") double priceMin, @PathVariable("priceMax") double priceMax) {
     BigDecimal priceMinBD = new BigDecimal(priceMin);
     BigDecimal priceMaxBD = new BigDecimal(priceMax);
-    return itemRepository.findByPriceLessThanEqualAndPriceGreaterThanEqual(priceMinBD, priceMaxBD);
+    return itemRepository.findByPriceGreaterThanEqualAndPriceLessThan(priceMinBD, priceMaxBD);
   }
 }
