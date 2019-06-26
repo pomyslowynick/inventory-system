@@ -27,7 +27,7 @@ public class Item {
   private String name;
 
   @NotNull(message = "Price is mandatory")
-  @DecimalMin(value="0.001")
+  @DecimalMin(value="0.01")
   private BigDecimal price;
 
   @NotBlank(message = "Category is mandatory")

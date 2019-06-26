@@ -4,11 +4,12 @@ import com.inventory_system.model.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-  List<Item> findByPriceLessThanEqualAndPriceGreaterThanEqual(double priceMin, double priceMax);
+  List<Item> findByPriceLessThanEqualAndPriceGreaterThanEqual(BigDecimal priceMin, BigDecimal priceMax);
 
   List<Item> findTop5ByOrderByIdDesc();
 

@@ -1,5 +1,6 @@
 package com.inventory_system.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.inventory_system.model.Item;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 /*
    When declared the controller class takes over http requests< I couldnt make it cooperate with Vaadin.
 */
-//@RestController
+@RestController
 @Component
 public class MainController {
 
@@ -33,7 +34,7 @@ public class MainController {
   @GetMapping("/topCategory")
   public String getTopCategory() { return itemRepository.findFirstCategory(); }
 
-  @GetMapping("/getAll/item")
+  @GetMapping("/")
   public List<Item> getAllItems() {
     return itemRepository.findAll();
   }
@@ -59,8 +60,7 @@ public class MainController {
     itemRepository.deleteById(id);
   }
 
-  @GetMapping("" +
-          "   `1")
+  @GetMapping("/Total")
   public int getQuantityInventory() {
     return itemRepository.getTotalQuantity();
   }
@@ -68,6 +68,8 @@ public class MainController {
   @GetMapping("/getPriceBetween/{priceMin}and{priceMax}")
   public List<Item> getItemPriceBetween(
       @PathVariable("priceMin") double priceMin, @PathVariable("priceMax") double priceMax) {
-    return itemRepository.findByPriceLessThanEqualAndPriceGreaterThanEqual(0, 100);
+    BigDecimal priceMinBD = new BigDecimal(priceMin);
+    BigDecimal priceMaxBD = new BigDecimal(priceMax);
+    return itemRepository.findByPriceLessThanEqualAndPriceGreaterThanEqual(priceMinBD, priceMaxBD);
   }
 }
