@@ -154,7 +154,7 @@ public class InventoryEditorImpl extends VerticalLayout implements KeyNotifier, 
       item = c;
     }
     reset.setVisible(persisted);
-
+    delete.setVisible(persisted);
     // Bind Item properties to similarly named fields
     // Could also use annotation or "manual binding" or programmatically
     // moving values from fields to entities before saving

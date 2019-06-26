@@ -166,7 +166,7 @@ public class MainView extends VerticalLayout {
       grid.setItems(repo.findAll());
       BigDecimal temp1 = new BigDecimal(priceFilterLessThanOrEqual.getValue());
       BigDecimal temp2 = new BigDecimal(priceFilterMoreThan.getValue());
-      grid.setItems(repo.findByPriceGreaterThanEqualAndPriceLessThan(temp1, temp2));
+      grid.setItems(repo.findByPriceGreaterThanEqualAndPriceLessThan(temp2, temp1));
     } else if (selectFilterCategory.getValue().equals("By categories")) {
       grid.setItems(repo.findByCategoryEquals(selectCategory.getValue()));
     } else {
