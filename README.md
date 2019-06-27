@@ -42,7 +42,7 @@ Major components that I have used in building this application, smaller ones not
 <!-- GETTING STARTED -->
 ## Getting Started
 
-I will provide instructions to how run my application using InteliJ Ultimate edition, if I will have time I will provide instructions for other IDE's as well.
+I will provide instructions on how to run my application using InteliJ Ultimate edition, if I will have time I will provide instructions for other IDE's as well.
 
 ### Prerequisites
 
