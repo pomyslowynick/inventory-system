@@ -1,6 +1,8 @@
 package com.inventory_system.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.Entity;
@@ -17,6 +19,8 @@ import java.math.BigDecimal;
  */
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Item {
 
   @Id
@@ -36,18 +40,5 @@ public class Item {
   @Range(min = 0, max = 5)
   @NotNull(message = "Quantity is mandatory")
   private int quantity;
-
-  public Item() {
-    this.name = null;
-    this.price = null;
-    this.category = null;
-    this.quantity = 0;
-  }
-
-  public Item(String name, BigDecimal price, String category, int quantity) {
-    this.name = name;
-    this.price = price;
-    this.category = category;
-    this.quantity = quantity;
-  }
+  
 }
