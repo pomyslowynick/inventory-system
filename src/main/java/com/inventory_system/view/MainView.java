@@ -121,19 +121,18 @@ public class MainView extends VerticalLayout {
 
   void setupChangeHandler() {
   // Listen to changes made by the editor, refresh data from backend
-    editor.setChangeHandler(
-            () -> {
-    editor.setVisible(false);
-    //            listItems(filter.getValue());
+    editor.setChangeHandler( () -> {
+      // Hide editor
+      editor.setVisible(false);
 
-    // Update totalQuantity label each time edit happens
-    totalQuantity.setText("Total items: " + repo.getTotalQuantity());
+      // Update totalQuantity label each time edit happens
+      totalQuantity.setText("Total items: " + repo.getTotalQuantity());
 
-    // Update the categories each time some edit happens
-    selectCategory.setItems(repo.getAllCategories());
+      // Update the categories each time some edit happens
+      selectCategory.setItems(repo.getAllCategories());
 
-    // Setting default value again
-    selectCategory.setValue(repo.findFirstCategory());
+      // Setting default value again
+      selectCategory.setValue(repo.findFirstCategory());
     });
   }
 
